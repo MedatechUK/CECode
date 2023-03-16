@@ -1,4 +1,4 @@
-/* Copy FROM site TO site 
+/* Copy FROM site TO site
 */
 :DOC = 0 ;
 :DOCNO = '' ;
@@ -9,8 +9,8 @@ AND   DOCNO = :$.PR1
 AND   TYPE = 'p'
 ;
 /* Check exists
- */
-SELECT :$.NAM , :DOCNO 
+*/
+SELECT :$.NAM , :DOCNO
 INTO :PAR1, :PAR2
 FROM DUMMY ;
 ERRMSG 800 WHERE EXISTS (
