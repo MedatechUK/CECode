@@ -1,8 +1,4 @@
-#INCLUDE func/ZCLA_DEBUGUSR
-SELECT 'ZCLA_ELACT/POST-INSERT' 
-FROM DUMMY 
-WHERE :DEBUG = 1
-FORMAT :DEBUGFILE ;
+:DEBUG = 1 ;
 :DOC = :PLOT = :ELEMENT = 0 ;
 SELECT :$$$.DOC , :$$.PROJACT , :$.PROJACT
 INTO :DOC , :PLOT , :ELEMENT
@@ -13,7 +9,7 @@ Add missing fixes */
 /* 
 Update the element rooms and components */
 #INCLUDE ZCLA_ELACT/ZCLA_BUF1
-/*
+/* 
 Calculate Uplifts by ELEMENT */
 #INCLUDE DOCUMENTS_p/ZCLA_ELEMENT
 #INCLUDE ZCLA_FIXES/ZCLA_ELEMENT
