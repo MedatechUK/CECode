@@ -1,0 +1,25 @@
+/*
+Skip if interface */
+GOTO 999 WHERE :FORM_INTERFACE = 1 ;
+/*
+Skip if no changes */
+GOTO 999 WHERE NOT EXISTS (
+SELECT 'x' FROM ZCLA_HOUSETYPE
+WHERE 0=0
+AND   DOREFRESH = 'Y'
+AND   HOUSETYPEID = :$$.HOUSETYPEID
+);
+/*
+Run calculation */
+#INCLUDE ZCLA_HOUSETYPE/ZCLA_BUF6
+/*
+Update screen values */
+SELECT 'Y'
+INTO :$$.CHANGEFLAG
+FROM DUMMY ;
+/*
+Reset refresh flag */
+UPDATE ZCLA_HOUSETYPE
+SET   DOREFRESH = ''
+WHERE   HOUSETYPEID = :$$.HOUSETYPEID ;
+LABEL 999 ;
