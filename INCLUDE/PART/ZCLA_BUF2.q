@@ -1,0 +1,7 @@
+/* Determine blank part */
+:BLANKPART = 0;
+SELECT PART
+INTO :BLANKPART
+FROM PART
+WHERE ZCLA_CUNITBLANK = 'Y'
+;
