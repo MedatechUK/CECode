@@ -1,0 +1,35 @@
+:$.PART
+
+:$.ZCLA_MISSINGREPL
+
+
+:MANFID = 0 ;
+/* select manufacturer from default or site
+*/
+GOTO 300 WHERE :$$$$.TYPE <> '¬';
+/* from default */
+:PCUST = 0 ;
+SELECT PCUST INTO :PCUST
+FROM CUSTOMERS
+WHERE CUST = :$$$$.CUST
+;
+SELECT MANFID INTO :MANFID
+FROM ZCLA_DEFAULTMANF
+WHERE 0=0
+AND   CUST = :PCUST
+AND   ZCLA_DEFAULTMANF.FAMILY = :$.FAMILY
+AND   COL = ( :ZCLA_WHITE <> 'Y' ? :$.COL : :WHT)
+;
+GOTO 400 ;
+LABEL 300 ;
+/* from site */
+SELECT MANFID INTO :MANFID
+FROM ZCLA_PROJMANF
+WHERE 0=0
+AND   DOC = :$$$$.DOC
+AND   ZCLA_PROJMANF.FAMILY = :$.FAMILY
+AND   COL = ( :ZCLA_WHITE <> 'Y' ? :$.COL : :WHT)
+;
+LABEL 400 ;
+/*
+*/

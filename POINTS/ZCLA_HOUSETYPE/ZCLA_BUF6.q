@@ -43,7 +43,7 @@ WHERE :DEBUG = 1
 FORMAT ADDTO :DEBUGFILE ;
 #INCLUDE func/ZCLA_ERRMSG
 UNLINK GENERALLOAD ;
-GOTO 500 WHERE :$$$.TYPE = '¬' ;
+GOTO 500 ; /* WHERE :$$$.TYPE = '¬' ; */
 /*
 Update plots with this house type*/
 :SITE = :PL = :EL = :LN = 0 ;
