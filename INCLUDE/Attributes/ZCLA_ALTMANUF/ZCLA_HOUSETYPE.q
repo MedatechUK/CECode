@@ -1,0 +1,8 @@
+/* 
+Get alt from housetype */
+:ALT = 0 ;
+SELECT ALT INTO :ALT
+FROM ZCLA_HOUSETYPE 
+WHERE 0=0
+AND   HOUSETYPEID = :HOUSETYPE
+;
