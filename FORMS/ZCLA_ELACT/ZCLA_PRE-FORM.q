@@ -1,3 +1,7 @@
+
+/*
+Skip if interface */
+GOTO 98 WHERE :FORM_INTERFACE = 1 ;
 /*
 Refresh Plot elements */
 #INCLUDE func/ZCLA_DEBUGUSR
@@ -33,3 +37,4 @@ CLOSE @PLOTELEMENT;
 LABEL 9 ;
 /*
 */
+LABEL 98 ;

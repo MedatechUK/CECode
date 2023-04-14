@@ -1,0 +1,5 @@
+:PART = :$$.PART ;
+:TYPE = :$$$$$.TYPE ;
+:CUST = :$$$$$.CUST ; 
+:COL = :$$.COL ;
+:DOC = :$$$$$.DOC ;
