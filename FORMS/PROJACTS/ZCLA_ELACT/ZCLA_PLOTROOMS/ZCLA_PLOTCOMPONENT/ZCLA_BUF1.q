@@ -1,0 +1,32 @@
+/*
+*/
+SELECT 'Y' INTO :$.CHANGEFLAG
+FROM DUMMY ;
+:LN = 0 ;
+SELECT 1 + MAX(LINE) INTO :LN
+FROM GEN_CHANGE_LOG
+WHERE 0=0
+AND   IV = :$.NSCUST
+AND   KLINE = :$.KLINE
+AND   TYPE = :$.EXTTYPE ;
+/*
+*/
+INSERT INTO GEN_CHANGE_LOG (IV
+,   TYPE
+,   KLINE
+,   LINE
+,   FIELD
+,   OLDVALUE
+,   NEWVALUE
+,   UDATE
+,   USER )
+SELECT :$.NSCUST
+,      :$.EXTTYPE
+,      :$.KLINE
+,      :LN
+,      :FNAME
+,      :$1.@
+,      :$.@
+,      SQL.DATE
+,      SQL.USER
+FROM DUMMY ;
