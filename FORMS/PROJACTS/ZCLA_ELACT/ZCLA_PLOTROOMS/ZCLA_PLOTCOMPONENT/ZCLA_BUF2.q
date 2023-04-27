@@ -1,5 +1,5 @@
 /*
-Integer Change*/
+Alpha Change*/
 :EDITID = 0 ;
 SELECT EDITID INTO :EDITID
 FROM ZCLA_ELEDIT
@@ -7,8 +7,7 @@ WHERE 0=0
 AND   PROJACT = :$.PROJACT
 AND   CLOSEFLAG <> 'Y'
 ;
-ERRMSG 801 WHERE :EDITID = 0
-;
+ERRMSG 801 WHERE :EDITID = 0 ;
 SELECT 'Y' INTO :$.CHANGEFLAG
 FROM DUMMY ;
 INSERT INTO ZCLA_EDITLOG ( EDITID
@@ -29,8 +28,8 @@ SELECT :EDITID
 ,      :$.ROOM
 ,      :$.PLOTCOMPONENT
 ,      :FNAME
-,      ITOA(:$1.@ / 1000 )
-,      ITOA(:$.@ / 1000 )
+,      :$1.@
+,      :$.@
 ,      0
 ,      0
 ,      SQL.DATE
