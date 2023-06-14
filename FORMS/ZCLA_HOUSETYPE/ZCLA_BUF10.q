@@ -3,7 +3,7 @@ Get Split and Markup */
 #INCLUDE func/ZCLA_DEBUGUSR
 SELECT 'ZCLA_HOUSETYPE/ZCLA_BUF10' , :HOUSETYPE
 FROM DUMMY
-WHERE :DEBUG = 2
+WHERE :DEBUG = 1
 FORMAT ADDTO :DEBUGFILE ;
 /*
 Use the default or housetype split ? */
