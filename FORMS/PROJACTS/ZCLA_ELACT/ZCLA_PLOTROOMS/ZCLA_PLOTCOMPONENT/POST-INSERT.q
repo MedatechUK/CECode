@@ -15,7 +15,14 @@ AND   PROJACT = :$.PROJACT
 AND   CLOSEFLAG <> 'Y' ;
 GOTO 99 WHERE :EDITID = 0 ;
 /*
-Save the edit to the log*/
+Link the new component to the edit */
+UPDATE ZCLA_PLOTCOMPONENT
+SET    EDITID = :EDITID
+WHERE  0=0
+AND    PLOTCOMPONENT = :$.PLOTCOMPONENT
+;
+/*
+Save the edit to the log */
 INSERT INTO ZCLA_EDITLOG ( EDITID
 ,   PROJACT
 ,   ROOM
