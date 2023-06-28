@@ -279,7 +279,7 @@ SELECT SQL.USER
 ,   :FIXACT
 ,   :LN  + SQL.LINE
 ,   KEY2
-,   SUM( INT1 ) 
+,   ROUND(0.0 + (SUM( INT1 ) ) )
 ,   SQL.USER
 ,   SQL.DATE
 ,   SQL.DATE
