@@ -1,5 +1,5 @@
 /*
-Get extras Split */
+Get extras Split by order of precedence */
 #INCLUDE func/ZCLA_DEBUGUSR
 SELECT 'ZCLA_ELACT/ZCLA_BUF10' , :ELEMENT
 FROM DUMMY

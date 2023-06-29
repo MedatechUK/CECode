@@ -240,10 +240,16 @@ SET ZCLA_INITPOINTS = :POINTS
 +                   ((( :CASHVALUE * :ZCLA_LABOURPOINTS) + :TRAVEL ) * :SAFETYMARGIN )
 +                    :MILEAGECOST
 +                   ZCLA_SUBCON
-,    ZCLA_NOPACK = :NOPACK + :SUNDRYSUM + (:DBMULT * :MONVAL)
-+                   ((( :CASHVALUE * :ZCLA_LABOURPOINTS) + :TRAVEL ) * :SAFETYMARGIN )
-+                    :MILEAGECOST
-+                   ZCLA_SUBCON
+WHERE 0=0
+AND ZCLA_PLOT = :ELEMENT
+AND ZCLA_FIX = :FIXID ;
+/*
+TODO: Update until agreed */
+UPDATE PROJACTS
+SET ZCLA_NOPACK = :NOPACK + :SUNDRYSUM + (:DBMULT * :MONVAL)
++                 ((( :CASHVALUE * :ZCLA_LABOURPOINTS) + :TRAVEL ) * :SAFETYMARGIN )
++                 :MILEAGECOST
++                 ZCLA_SUBCON
 WHERE 0=0
 AND ZCLA_PLOT = :ELEMENT
 AND ZCLA_FIX = :FIXID ;
@@ -273,8 +279,6 @@ LOOP 500;
 LABEL 600;
 CLOSE @INIT ;
 LABEL 999;
-/*
-*/
 /*
 Element Split */
 #INCLUDE ZCLA_ELACT/ZCLA_BUF11
