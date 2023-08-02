@@ -8,9 +8,6 @@ FORMAT ADDTO :DEBUGFILE ;
 Add missing fixes */
 #INCLUDE ZCLA_FIXACT/ZCLA_BUF1
 /*
-Update the element rooms and components */
-#INCLUDE ZCLA_ELACT/ZCLA_BUF1
-/*
 Add missing consumer units */
 #INCLUDE ZCLA_ELACT/ZCLA_BUF5
 /*
