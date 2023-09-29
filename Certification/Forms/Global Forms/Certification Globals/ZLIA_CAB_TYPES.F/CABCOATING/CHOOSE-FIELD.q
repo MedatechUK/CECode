@@ -1,0 +1,5 @@
+/*ZLIA_CAB_TYPES/CABCOATING/CHOOSE-FIELD*/
+MESSAGE BETWEEN 850 AND 852;
+/*#850: Thermoplastic*/
+/*#851: Thermosetting*/
+/*#852: N/A*/

@@ -1,0 +1,7 @@
+/*ZLIA_CUDB_DEFOPT/CUDB_SPD/POST-FIELD*/
+/*Insert SPD into SPD choose field if :$.@ = Yes*/
+GOTO 999 WHERE :$.CUDB_SPD = 'No';
+SELECT 'SPD'
+INTO :$.SPD_PDV_DEFDES
+FROM DUMMY ;
+LABEL 999;

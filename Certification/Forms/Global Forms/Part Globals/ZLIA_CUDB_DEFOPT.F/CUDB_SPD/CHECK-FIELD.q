@@ -1,0 +1,6 @@
+/*ZLIA_CUDB_DEFOPT/CUDB_SPD/CHECK-FIELD*/
+GOTO 999 WHERE :$.CUDB_SPD = 'Yes';
+GOTO 999 WHERE :$.CUDB_SPD = 'No';
+ERRMSG 895;
+LABEL 999;
+/*#895: Permitted Values are Yes or No.*/
