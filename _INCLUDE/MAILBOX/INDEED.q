@@ -227,6 +227,12 @@ LOOP 10 ;
 LABEL 90 ;
 CLOSE C ;
 SELECT '</source>' FROM DUMMY ASCII ADDTO :TMPFILE ;
+EXECUTE FILTER '-replace'
+,              '&nbsp;' , ' '
+,              '&quot;' , '"'
+,              '&amp;' , '&'
+,              :TMPFILE , :TMPFILE
+;
 EXECUTE FILTER '-unicode2utf8'
 ,              :TMPFILE , 'C:\inetpub\wwwroot\indeed.xml'
 ;
