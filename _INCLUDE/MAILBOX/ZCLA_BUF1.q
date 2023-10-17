@@ -57,12 +57,15 @@ SELECT '</html>'
 FROM DUMMY
 ASCII UNICODE ADDTO :TMPFILE
 ;
-EXECUTE FILTER '-replace' 
-,              '<P1>' , :PAR1 
-,              '<P2>' , :PAR2 
-,              '<P3>' , :PAR3 
-,              '<P4>' , :PAR4 
-,              '<P5>' , :PAR5 
-,              '<P6>' , :PAR6 
+EXECUTE FILTER '-replace'
+,              '<P1>' , :PAR1
+,              '<P2>' , :PAR2
+,              '<P3>' , :PAR3
+,              '<P4>' , :PAR4
+,              '<P5>' , :PAR5
+,              '<P6>' , :PAR6
+,              '<P7>' , :PAR7
+,              '<P8>' , :PAR8
+,              '<P9>' , :PAR9
 ,              :TMPFILE , :TMPFILE
 ;
