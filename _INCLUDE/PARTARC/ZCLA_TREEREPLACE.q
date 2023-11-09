@@ -105,6 +105,14 @@ FORMAT ADDTO :DEBUGFILE
 Site / Alt part list / child part family 
 depending on finish. :ISWHITE parts always use
 the :WHITE finish. */
+:C = 0 ;
+SELECT COUNT(*) INTO :C
+FROM ZCLA_PROJMANF
+WHERE 0=0
+AND   ALT = :ALT
+AND   DOC = :DOC
+AND   ZCLA_PROJMANF.FAMILY = :FAMILY
+;
 SELECT MANFID , ( :ZCLA_WHITE <> 'Y' ? ZCLA_PROJMANF.COL : :WHITE )
 INTO :MANFID , :COL
 FROM ZCLA_PROJMANF
@@ -112,7 +120,7 @@ WHERE 0=0
 AND   ALT = :ALT
 AND   DOC = :DOC
 AND   ZCLA_PROJMANF.FAMILY = :FAMILY
-AND   STYLE = :STYLE
+AND   (:C > 1 ? STYLE : '') = (:C > 1 ? :STYLE : '')
 ;
 SELECT :MANFID , :COL
 FROM DUMMY
