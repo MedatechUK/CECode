@@ -80,7 +80,7 @@ SELECT 'x'
 FROM ZCLA_ELSTATUSES
 WHERE  0=0
 AND   STEPSTATUSDES = :$.STATDES
-AND   ( EXTRAFLAG  = 'Y' OR HOLD = 'Y' )
+AND   ( EDITFLAG  = 'Y' OR HOLD = 'Y' )
 );
 /*
 Quit where no NEWSTAT */
@@ -118,7 +118,7 @@ SELECT 'x'
 FROM ZCLA_ELSTATUSES
 WHERE  0=0
 AND   STEPSTATUSDES = :$.STATDES1
-AND   ( EXTRAFLAG  = 'Y' OR HOLD = 'Y' )
+AND   ( EDITFLAG  = 'Y' OR HOLD = 'Y' )
 );
 /*
 Update Fixes */

@@ -43,9 +43,11 @@ AND   TYPE = 'F' ;
 DELETE FROM BPMLOG WHERE FORM = :FORM ;
 
 :F = 'Ready' ; :T = 'Edit' ; GOSUB 100 ;
+:F = 'Ready' ; :T = 'Extras' ; GOSUB 100 ;
 :F = 'Edit' ; :T = 'Ready' ; GOSUB 100 ;
+:F = 'Extras' ; :T = 'Ready' ; GOSUB 100 ;
 :F = 'Ready' ; :T = 'Hold' ; GOSUB 100 ;
-:F = 'Active' ; :T = 'Hold' ; GOSUB 100 ;
+:F = 'Hold' ; :T = 'Ready' ; GOSUB 100 ;
 
 SELECT * FROM BPMLOG WHERE FORM = :FORM
 FORMAT ;

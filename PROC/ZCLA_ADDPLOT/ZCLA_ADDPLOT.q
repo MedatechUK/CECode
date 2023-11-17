@@ -1,4 +1,5 @@
-/* */
+/* 
+TODO: error where contract not editable */
 #INCLUDE func/ZCLA_DEBUGUSR
 SELECT 'ZCLA_ADDPLOT' FROM DUMMY
 FORMAT ADDTO :DEBUGFILE ;
@@ -73,7 +74,7 @@ AND   LEVEL = 1
 AND   WBS = ITOA(:PLOT)
 );
 /* Create New plot
-*/
+TODO: set status to Ready when contract active */
 INSERT INTO GENERALLOAD (LINE , RECORDTYPE, TEXT1, TEXT2 , INT1 ,
 INT2, INT3)
 SELECT :LN
