@@ -6,52 +6,7 @@ FROM DUMMY
 WHERE :DEBUG = 1
 FORMAT ADDTO :DEBUGFILE;
 /*
-Get the current Edit */
-:EDITID = 0 ;
-SELECT EDITID INTO :EDITID
-FROM ZCLA_ELEDIT
-WHERE 0=0
-AND   PROJACT = :$.PROJACT
-AND   CLOSEFLAG <> 'Y' ;
-GOTO 99 WHERE :EDITID = 0 ;
-/*
-Link the new component to the edit */
-UPDATE ZCLA_PLOTCOMPONENT
-SET    EDITID = :EDITID
-WHERE  0=0
-AND    PLOTCOMPONENT = :$.PLOTCOMPONENT
-;
-/*
-Save the edit to the log */
-INSERT INTO ZCLA_EDITLOG ( EDITID
-,   PROJACT
-,   ROOM
-,   COMPONENT
-,   FIELD
-,   OLDVALUE
-,   NEWVALUE
-,   OLDCOST
-,   NEWCOST
-,   UDATE
-,   USER
-,   GUID
-)
-SELECT :EDITID
-,      :$.PROJACT
-,      :$.ROOM
-,      0 + :$.PLOTCOMPONENT
-,      'INSERT'
-,      ''
-,      :$.PARTNAME
-,      0
-,      0
-,      SQL.DATE
-,      SQL.USER
-,      SQL.GUID
-FROM DUMMY ;
-/*
 */
-LABEL 99 ;
 GOTO 999 WHERE :FORM_INTERFACE = 1 ;
 UPDATE PROJACTS
 SET ZCLA_DOREFRESH = 'Y'
