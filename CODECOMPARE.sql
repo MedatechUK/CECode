@@ -256,6 +256,8 @@ BEGIN
 	DECLARE @TO INT
 	DECLARE @I INT
 	SET @I = 0
+	DECLARE @P INT
+	SET @P = 0
 
 	/* delete dest from src */
 	select @TO = COUNT(*)
@@ -264,7 +266,7 @@ BEGIN
 
 	print 'Begin Cursor'
 	declare cur CURSOR for 
-	select TYPE , FORM , [COLUMN] , [TRIGGER] ,CODE
+	select TYPE , FORM , [COLUMN] , [TRIGGER] , CODE
 	from dbo.CODETMP
 	where SERVER = @@SERVERNAME
 	OPEN cur
@@ -273,7 +275,8 @@ BEGIN
 	BEGIN  	
 		SELECT @I = @I + 1
 		IF @I % (@TO/100) = 1 BEGIN
-			SELECT str((@I/@TO)*100) + '%'
+			SELECT @P = @P + 1
+			SELECT str(@P) + '%'
 		END		
 
 		DELETE FROM dbo.CODETMP
@@ -302,3 +305,5 @@ from CODETMP
 where SERVER <> @@SERVERNAME
 */
 GO
+
+
