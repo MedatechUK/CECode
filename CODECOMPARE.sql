@@ -257,7 +257,7 @@ BEGIN
 	DECLARE @I INT
 	SET @I = 0
 	DECLARE @P INT
-	SET @P = 0
+	SET @P = -1
 
 	/* delete dest from src */
 	select @TO = COUNT(*)
