@@ -11,6 +11,7 @@ EDITTYPE (CHAR,1,'W/A/R/S/H/C/P')
 .    H(ouse)
 .    C(onsumer unit)
 .    P(art)
+.    K(Small Works)
 */
 #INCLUDE func/ZCLA_DEBUGUSR
 SELECT 'ZCLA_HTEDIT/ZCLA_BUF1'

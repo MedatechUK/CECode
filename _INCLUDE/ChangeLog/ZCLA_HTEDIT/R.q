@@ -21,7 +21,7 @@ INSERT INTO ZCLA_ELEDITLOG ( EDITID
 ,      FIELD
 ,      OLDKEY
 ,      NEWKEY
-,      OLDVALUE
+,      OLDVALUE 
 ,      NEWVALUE
 ,      OLDPRICE
 ,      NEWPRICE
