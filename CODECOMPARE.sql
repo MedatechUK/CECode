@@ -1,6 +1,33 @@
 USE [system]
 GO
-/****** Object:  UserDefinedFunction [dbo].[frmTrigger]    Script Date: 2/7/2024 8:29:26 AM ******/
+/****** Object:  StoredProcedure [dbo].[CompareCode]    Script Date: 13/02/2024 08:54:02 ******/
+DROP PROCEDURE [dbo].[CompareCode]
+GO
+/****** Object:  View [dbo].[vCompare]    Script Date: 13/02/2024 08:54:02 ******/
+DROP VIEW [dbo].[vCompare]
+GO
+/****** Object:  View [dbo].[TESTCODE]    Script Date: 13/02/2024 08:54:02 ******/
+DROP VIEW [dbo].[TESTCODE]
+GO
+/****** Object:  View [dbo].[DEVCODE]    Script Date: 13/02/2024 08:54:02 ******/
+DROP VIEW [dbo].[DEVCODE]
+GO
+/****** Object:  View [dbo].[SQLCODE]    Script Date: 13/02/2024 08:54:02 ******/
+DROP VIEW [dbo].[SQLCODE]
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetCode]    Script Date: 13/02/2024 08:54:02 ******/
+DROP FUNCTION [dbo].[GetCode]
+GO
+/****** Object:  UserDefinedFunction [dbo].[procTrigger]    Script Date: 13/02/2024 08:54:02 ******/
+DROP FUNCTION [dbo].[procTrigger]
+GO
+/****** Object:  UserDefinedFunction [dbo].[frmcolTrigger]    Script Date: 13/02/2024 08:54:02 ******/
+DROP FUNCTION [dbo].[frmcolTrigger]
+GO
+/****** Object:  UserDefinedFunction [dbo].[frmTrigger]    Script Date: 13/02/2024 08:54:02 ******/
+DROP FUNCTION [dbo].[frmTrigger]
+GO
+/****** Object:  UserDefinedFunction [dbo].[frmTrigger]    Script Date: 13/02/2024 08:54:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -36,10 +63,13 @@ BEGIN
 	RETURN @combinedString
 END
 /*
+
 	select dbo.frmTrigger( 'ZCLA_ELACT' , 'PRE-FORM' )
+	
+
 */
 GO
-/****** Object:  UserDefinedFunction [dbo].[frmcolTrigger]    Script Date: 2/7/2024 8:29:26 AM ******/
+/****** Object:  UserDefinedFunction [dbo].[frmcolTrigger]    Script Date: 13/02/2024 08:54:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -82,9 +112,13 @@ BEGIN
 END
 /*
 	select dbo.frmcolTrigger( 'ZCLA_ELACT' , 'STATDES' , 'POST-FIELD' )
+	SET @ENAME = 'ZCLA_ELACT'
+	SET @CNAME = 'STATDES'
+	SET @TNAME = 'POST-FIELD'
+
 */
 GO
-/****** Object:  UserDefinedFunction [dbo].[procTrigger]    Script Date: 2/7/2024 8:29:26 AM ******/
+/****** Object:  UserDefinedFunction [dbo].[procTrigger]    Script Date: 13/02/2024 08:54:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -121,9 +155,13 @@ BEGIN
 END
 /*
 	select dbo.frmcolTrigger( 'ZCLA_ELACT' , 'STATDES' , 'POST-FIELD' )
+	SET @ENAME = 'ZCLA_ELACT'
+	SET @CNAME = 'STATDES'
+	SET @TNAME = 'POST-FIELD'
+
 */
 GO
-/****** Object:  UserDefinedFunction [dbo].[GetCode]    Script Date: 2/7/2024 8:29:26 AM ******/
+/****** Object:  UserDefinedFunction [dbo].[GetCode]    Script Date: 13/02/2024 08:54:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -182,7 +220,7 @@ RETURN
 	union all
 	SELECT TOP (100) PERCENT @@SERVERNAME                           AS Expr2,
 							 dbo.T$EXEC.TYPE,
-                             dbo.T$EXEC.ENAME                       AS FORM,
+							 dbo.T$EXEC.ENAME                       AS FORM,
 							 ''                                     AS [COLUMN],							 
 							 'STEP ' + Ltrim(Str(dbo.PROGRAMS.POS)) AS [TRIGGER],
 							 0,
@@ -198,22 +236,57 @@ RETURN
 		   AND ( RUN.ENAME = N'SQLI' ) 
 )
 GO
-/****** Object:  View [dbo].[SQLCODE]    Script Date: 2/7/2024 8:29:26 AM ******/
+/****** Object:  View [dbo].[SQLCODE]    Script Date: 13/02/2024 08:54:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
 CREATE VIEW [dbo].[SQLCODE]
 AS
 SELECT        SERVER, TYPE, FORM, [COLUMN], [TRIGGER], TDATE, USERLOGIN, CODE
 FROM            dbo.GetCode() AS GetCode_1
 GO
-/****** Object:  StoredProcedure [dbo].[CompareCode]    Script Date: 2/7/2024 8:29:26 AM ******/
+/****** Object:  View [dbo].[DEVCODE]    Script Date: 13/02/2024 08:54:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+CREATE VIEW [dbo].[DEVCODE]
+AS
+SELECT        SERVER, TYPE, FORM, [COLUMN], [TRIGGER], TDATE, USERLOGIN, CODE
+FROM            dbo.CODETMP
+WHERE        (SERVER <> @@SERVERNAME)
+GO
+/****** Object:  View [dbo].[TESTCODE]    Script Date: 13/02/2024 08:54:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[TESTCODE]
+AS
+SELECT        SERVER, TYPE, FORM, [COLUMN], [TRIGGER], TDATE, USERLOGIN, CODE
+FROM            dbo.CODETMP
+WHERE        (SERVER = @@SERVERNAME)
+GO
+/****** Object:  View [dbo].[vCompare]    Script Date: 13/02/2024 08:54:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[vCompare]
+AS
+SELECT        dbo.DEVCODE.TYPE, dbo.DEVCODE.FORM, dbo.DEVCODE.[COLUMN], dbo.DEVCODE.[TRIGGER], dbo.DEVCODE.CODE AS DEVCODE, dbo.DEVCODE.TDATE AS DEVDATE, dbo.DEVCODE.USERLOGIN AS DEVUSER, 
+                         dbo.TESTCODE.CODE AS TESTCODE, dbo.TESTCODE.TDATE AS TESTDATE, dbo.TESTCODE.USERLOGIN AS TESTUSER
+FROM            dbo.DEVCODE INNER JOIN
+                         dbo.TESTCODE ON dbo.DEVCODE.TYPE = dbo.TESTCODE.TYPE AND dbo.DEVCODE.FORM = dbo.TESTCODE.FORM AND dbo.DEVCODE.[COLUMN] = dbo.TESTCODE.[COLUMN] AND 
+                         dbo.DEVCODE.[TRIGGER] = dbo.TESTCODE.[TRIGGER]
+GO
+/****** Object:  StoredProcedure [dbo].[CompareCode]    Script Date: 13/02/2024 08:54:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
 -- =============================================
 -- Author:		Si
 -- Create date: 06/02/24
@@ -285,7 +358,7 @@ BEGIN
 		and FORM = @FORM
 		and [COLUMN] = @COL
 		and [TRIGGER] = @TRIG
-		AND CODE = @CODE
+		AND ISNULL(CODE,'') = ISNULL(@CODE , '')
 	
 		fetch next from cur into @TYPE , @FORM , @COL, @TRIG , @CODE
 
@@ -305,5 +378,3 @@ from CODETMP
 where SERVER <> @@SERVERNAME
 */
 GO
-
-
