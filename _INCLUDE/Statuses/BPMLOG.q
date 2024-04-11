@@ -28,6 +28,8 @@ DELETE FROM BPMLOG WHERE FORM = :FORM ;
 :F = 'Active' ; :T = 'Edit' ; GOSUB 100 ;
 :F = 'Active' ; :T = 'Lost' ; GOSUB 100 ;
 :F = 'Ready' ; :T = 'Lost' ; GOSUB 100 ;
+:F = 'Ready' ; :T = 'Amend' ; GOSUB 100 ;
+:F = 'Amend' ; :T = 'Ready' ; GOSUB 100 ;
 
 SELECT * FROM BPMLOG WHERE FORM = :FORM
 FORMAT ;
