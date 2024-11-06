@@ -72,6 +72,29 @@ DELETE FROM BPMLOG WHERE FORM = :FORM ;
 SELECT * FROM BPMLOG WHERE FORM = :FORM
 FORMAT ;
 
+:TYPE = '<' ;
+:ENAME = 'ZCLA_PLOTACTSTAT' ;
+:FROM = :TO = :FORM = 0 ;
+
+SELECT EXEC INTO :FORM FROM EXEC
+WHERE 0=0
+AND   ENAME = :ENAME 
+AND   TYPE = 'F' ;
+
+DELETE FROM BPMLOG WHERE FORM = :FORM ;
+
+:F = 'Draft' ; :T = 'Canceled' ; GOSUB 100 ;
+:F = 'Draft' ; :T = 'Ready' ; GOSUB 100 ;
+:F = 'Ready' ; :T = 'Canceled' ; GOSUB 100 ;
+:F = 'Ready' ; :T = 'In Progress' ; GOSUB 100 ;
+:F = 'Ready' ; :T = 'Hold' ; GOSUB 100 ;
+:F = 'In Progress' ; :T = 'Hold' ; GOSUB 100 ;
+:F = 'In Progress' ; :T = 'Completed' ; GOSUB 100 ;
+:F = 'Completed' ; :T = 'Warranty End' ; GOSUB 100 ;
+
+SELECT * FROM BPMLOG WHERE FORM = :FORM
+FORMAT ;
+
 SUB 100 ;
 
 SELECT DOCSTATUS INTO :FROM

@@ -1,0 +1,6 @@
+Office Management > Appointments & Office Hours > Holidays (Office Closed)
+Human Resources > Employee Holidays > Extra Holiday Reasons
+Human Resources > Employee Holidays > User Holiday Groups
+Human Resources > Personnel File > Company-Specific Information
+    holiday groups / authoriser
+
