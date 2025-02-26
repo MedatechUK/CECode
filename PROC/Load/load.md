@@ -80,17 +80,17 @@ UNLINK GENERALLOAD ;
 ```
 
 ## Key Features
-Incremental Loading: Starts at :LN (e.g., 11687) and processes up to the next RECORDTYPE = '1' (stored in :C), avoiding memory overload.
-Batch Control: Uses MIN(LINE) to locate batch boundaries dynamically.
+- Incremental Loading: Starts at :LN (e.g., 11687) and processes up to the next RECORDTYPE = '1' (stored in :C), avoiding memory overload.
+- Batch Control: Uses MIN(LINE) to locate batch boundaries dynamically.
 External Processing: Calls ZLIA_MIG_PLOTEXTS to handle the heavy lifting (e.g., data transformation or loading).
-Progress Tracking: Updates fields like LOADED (e.g., 'Y' for success) and logs each batch to a file.
-Looping with Safety: Repeats only if all records in the current batch have LOADED = 'Y' and there’s a RECORDTYPE = '1' at or beyond :LN; otherwise, it exits to LABEL 999.
+- Progress Tracking: Updates fields like LOADED (e.g., 'Y' for success) and logs each batch to a file.
+- Looping with Safety: Repeats only if all records in the current batch have LOADED = 'Y' and there’s a RECORDTYPE = '1' at or beyond :LN; otherwise, it exits to LABEL 999.
 
 ## Usage Notes
-Customization: Replace :LN = 11687 with your desired starting line and adjust ZLIA_MIG_PLOTEXTS to your interface.
-Table: GENERALLOAD is the working table; ORIG refers to the source data.
-Output: Results are appended to ../../GENERALLOAD.txt for monitoring.
-Error Handling: The script will quit after a bad loading (e.g., if EXECUTE INTERFACE fails or any record has LOADED <> 'Y'), thanks to the GOTO 999 check. You can then review the log in ../../GENERALLOAD.txt, fix the data, and restart from the last :LN.
+- Customization: Replace :LN = 11687 with your desired starting line and adjust ZLIA_MIG_PLOTEXTS to your interface.
+- Table: GENERALLOAD is the working table; ORIG refers to the source data.
+- Output: Results are appended to ../../GENERALLOAD.txt for monitoring.
+- Error Handling: The script will quit after a bad loading (e.g., if EXECUTE INTERFACE fails or any record has LOADED <> 'Y'), thanks to the GOTO 999 check. You can then review the log in ../../GENERALLOAD.txt, fix the data, and restart from the last :LN.
 
 ## Why It’s Effective
 By processing data in batches marked by RECORDTYPE = '1', this method ensures scalability. The GOTO 999 WHERE EXISTS(...) statement prevents the script from proceeding if any record fails to load (i.e., LOADED <> 'Y'), and the LINE >= :LN condition ensures all batch boundaries are correctly processed, making it reliable for large datasets like importing millions of records into Priority ERP.
