@@ -1,7 +1,7 @@
 # PrioritySQL Storage Repartitioning Instructions
 
 **Machine**: CE-AZ-UK-S-PRIO (PrioritySQL)  
-**Date**: February 24, 2025  
+**Date**: March 15, 2025  
 **Objective**: Add a 4 TB attachments disk (I:), replace F: and G: with 4 TB disks, create 1 GB base partitions with mount points named identically to the original folders (`Priority`, `Dev`, `Test`), and copy files back to these mount points without modifying SQL database locations.
 
 ---
