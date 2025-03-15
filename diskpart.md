@@ -231,6 +231,5 @@
   - 1 TB = 1,024,000 MB (Dev).  
   - Total: 1 GB + 1.5 TB + 1 TB + 1.5 TB ≈ 4 TB (4096 GB).  
 - **Folder Names**: Mount points (`F:\Priority`, `G:\Priority`, etc.) match the original folder names. The batch script uses these names; adjust if your originals differ.  
-- **Temporary Disk I:**: Detach the I: disk after verification if no longer required.
 
 ---
