@@ -181,6 +181,5 @@
 
 - **Folder Names**: Mount points (`F:\Priority`, `G:\Priority`, etc.) must match the original folder names to avoid SQL database location changes.  
 - **Partition Sizes**: Adjust `size=` values in `diskpart` if different allocations are needed.  
-- **Temporary Disk I:**: Detach the temporary I: disk after verification if it’s no longer required.
 
 ---
