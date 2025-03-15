@@ -1,5 +1,6 @@
 # PrioritySQL Storage Repartitioning Instructions
 
+
 **Machine**: CE-AZ-UK-S-PRIO (PrioritySQL)  
 **Date**: March 15, 2025  
 **Objective**: Expand F: and G: disks to 4 TB each, repartition them by removing existing partitions, create 1 GB base partitions with mount points (`Priority` at 1.5 TB, `Dev` at 1 TB, `Test` at 1.5 TB), and copy files back to these mount points without modifying SQL database locations. Add a 4 TB attachments disk (I:) for temporary storage.
@@ -61,67 +62,67 @@
 2. **Run Copy and Verify Batch Script**:  
    - Save the following as `CopyAndVerify.bat` and run it in an elevated Command Prompt:  
    ```cmd
-@echo off
-setlocal enabledelayedexpansion
+   @echo off
+   setlocal enabledelayedexpansion
 
-echo Copying files from F: drive...
-robocopy "f:\Priority" "i:\From F Drive\Priority" /E /XO /V /R:5 /W:5
-robocopy "f:\Dev" "i:\From F Drive\Dev" /E /XO /V /R:5 /W:5
-robocopy "f:\Test" "i:\From F Drive\Test" /E /XO /V /R:5 /W:5
+   echo Copying files from F: drive...
+   robocopy "f:\Priority" "i:\From F Drive\Priority" /E /XO /V /R:5 /W:5
+   robocopy "f:\Dev" "i:\From F Drive\Dev" /E /XO /V /R:5 /W:5
+   robocopy "f:\Test" "i:\From F Drive\Test" /E /XO /V /R:5 /W:5
 
-echo Copying files from G: drive...
-robocopy "g:\Priority" "i:\From G Drive\Priority" /E /XO /V /R:5 /W:5
-robocopy "g:\Dev" "i:\From G Drive\Dev" /E /XO /V /R:5 /W:5
-robocopy "g:\Test" "i:\From G Drive\Test" /E /XO /V /R:5 /W:5
+   echo Copying files from G: drive...
+   robocopy "g:\Priority" "i:\From G Drive\Priority" /E /XO /V /R:5 /W:5
+   robocopy "g:\Dev" "i:\From G Drive\Dev" /E /XO /V /R:5 /W:5
+   robocopy "g:\Test" "i:\From G Drive\Test" /E /XO /V /R:5 /W:5
 
-echo Verifying files from F: drive...
-for /R "f:\Priority" %%f in (*.*) do (
-    set "destfile=i:\From F Drive\Priority\%%~pnxf"
-    set "destfile=!destfile:f:\Priority\=!"
-    if exist "!destfile!" (
-        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
-    )
-)
-for /R "f:\Dev" %%f in (*.*) do (
-    set "destfile=i:\From F Drive\Dev\%%~pnxf"
-    set "destfile=!destfile:f:\Dev\=!"
-    if exist "!destfile!" (
-        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
-    )
-)
-for /R "f:\Test" %%f in (*.*) do (
-    set "destfile=i:\From F Drive\Test\%%~pnxf"
-    set "destfile=!destfile:f:\Test\=!"
-    if exist "!destfile!" (
-        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
-    )
-)
+   echo Verifying files from F: drive...
+   for /R "f:\Priority" %%f in (*.*) do (
+      set "destfile=i:\From F Drive\Priority\%%~pnxf"
+      set "destfile=!destfile:f:\Priority\=!"
+      if exist "!destfile!" (
+         fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+      )
+   )
+   for /R "f:\Dev" %%f in (*.*) do (
+      set "destfile=i:\From F Drive\Dev\%%~pnxf"
+      set "destfile=!destfile:f:\Dev\=!"
+      if exist "!destfile!" (
+         fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+      )
+   )
+   for /R "f:\Test" %%f in (*.*) do (
+      set "destfile=i:\From F Drive\Test\%%~pnxf"
+      set "destfile=!destfile:f:\Test\=!"
+      if exist "!destfile!" (
+         fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+      )
+   )
 
-echo Verifying files from G: drive...
-for /R "g:\Priority" %%f in (*.*) do (
-    set "destfile=i:\From G Drive\Priority\%%~pnxf"
-    set "destfile=!destfile:g:\Priority\=!"
-    if exist "!destfile!" (
-        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
-    )
-)
-for /R "g:\Dev" %%f in (*.*) do (
-    set "destfile=i:\From G Drive\Dev\%%~pnxf"
-    set "destfile=!destfile:g:\Dev\=!"
-    if exist "!destfile!" (
-        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
-    )
-)
-for /R "g:\Test" %%f in (*.*) do (
-    set "destfile=i:\From G Drive\Test\%%~pnxf"
-    set "destfile=!destfile:g:\Test\=!"
-    if exist "!destfile!" (
-        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
-    )
-)
+   echo Verifying files from G: drive...
+   for /R "g:\Priority" %%f in (*.*) do (
+      set "destfile=i:\From G Drive\Priority\%%~pnxf"
+      set "destfile=!destfile:g:\Priority\=!"
+      if exist "!destfile!" (
+         fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+      )
+   )
+   for /R "g:\Dev" %%f in (*.*) do (
+      set "destfile=i:\From G Drive\Dev\%%~pnxf"
+      set "destfile=!destfile:g:\Dev\=!"
+      if exist "!destfile!" (
+         fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+      )
+   )
+   for /R "g:\Test" %%f in (*.*) do (
+      set "destfile=i:\From G Drive\Test\%%~pnxf"
+      set "destfile=!destfile:g:\Test\=!"
+      if exist "!destfile!" (
+         fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+      )
+   )
 
-echo Verification complete. Check comparison_log.txt for details.
-pause
+   echo Verification complete. Check comparison_log.txt for details.
+   pause
    ```  
    - **Notes**:  
      - `robocopy` ensures reliable copying with retries (`/R:5 /W:5`) and verbose logging (`/V`).  
