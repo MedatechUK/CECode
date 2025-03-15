@@ -184,10 +184,3 @@
 - **Temporary Disk I:**: Detach the temporary I: disk after verification if it’s no longer required.
 
 ---
-
-### How to Use This Document
-
-1. **Copy the Content**: Select all text within this code block.  
-2. **Paste into a Text Editor**: Use Notepad, VS Code, etc.  
-3. **Save as `.md`**: Name it (e.g., `PrioritySQL_Repartitioning.md`).  
-4. **Execute Commands**: Copy commands from `@` blocks into an elevated Command Prompt on the VM.
