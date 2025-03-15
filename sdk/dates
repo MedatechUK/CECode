@@ -1,0 +1,147 @@
+Dates 
+Dates, times and days are stored in the database as integers. Dates may be 
+represented to the user in American (MMDDYY) or European (DDMMYY) format, 
+depending on the type assigned to the language being used (in the 
+Languages form: System Management  Dictionaries  Translation).  
+The following examples are in American date format. 
+ DAY(date) — yields the number of the weekday on which the specified 
+date falls (where Sun=1, Mon=2, etc.). 
+SELECT DAY(03/22/06) FROM DUMMY FORMAT; /* 4 */ 
+Note: This number can then be translated into the name of the 
+weekday by means of the DAYS table (for the application's base 
+language of English) and the LANGDAYS table (for any additional 
+languages). These tables store the names of all days in the week in 
+what ever language you are using. 
+ MDAY(date) — yields the number of the day in the month 
+SELECT MDAY(03/22/06) FROM DUMMY FORMAT; /* 22 */ 
+ WEEK(date) — yields an integer comprised of the year (last one or two 
+digits of the year) and the number of the week in the year (two digits, 
+between 01 and 53) 
+SELECT WEEK(03/22/06) FROM DUMMY FORMAT; /* 612 */ 
+ WEEK6(date) — yields an integer comprised of the year in 4 digits and the 
+number of the week in the year (two digits, between 01 and 53) 
+30 
+Ver.1, Sept. 24, 2017 
+Cat.No.LB17000590  
+Chapter 2: SQL Syntax 
+SELECT WEEK6(03/22/06) FROM DUMMY FORMAT; /* 200612 */ 
+ MWEEK(week) — given a value for week (the last two digits of a year and 
+the number of a week in that year), yields the number of the month in 
+which that week falls 
+SELECT MWEEK(0612) FROM DUMMY FORMAT; /* 3 */ 
+ MONTH(date) — yields the number of the month in the year 
+SELECT MONTH(03/22/06) FROM DUMMY FORMAT; /* 3 */ 
+ QUARTER(date) — yields a string comprised of the annual quarter in 
+which the date falls followed by the four digits of the year  
+SELECT QUARTER(09/22/06) FROM DUMMY FORMAT; /* 3Q-2006 
+*/ 
+ YEAR(date) — yields an integer comprised of the four digits of the year 
+SELECT YEAR(03/22/06) FROM DUMMY FORMAT; /* 2006 */ 
+ TIMELOCAL(date) — yields the number of seconds from January 1, 1970, 
+to the specified date 
+SELECT TIMELOCAL(05/04/06) FROM DUMMY FORMAT; /* 
+1146693600 */ 
+ CTIME(int) — yields the date corresponding to the given number of 
+seconds since January 1, 1970 02:00 
+SELECT CTIME(1146693600) FROM DUMMY FORMAT;  
+/* Thu May 04 01:00:00 2006 */ 
+ BEGINOFMONTH(date) — yields the date of the first day of the month 
+SELECT BEGINOFMONTH(05/04/06) FROM DUMMY FORMAT; /* 
+05/01/06 */ 
+ BEGINOFQUARTER(date) — yields the date of the first day of the quarter 
+SELECT BEGINOFQUARTER(05/04/06) FROM DUMMY FORMAT; /* 
+04/01/06 */ 
+ BEGINOFHALF(date) — yields the date of the first day of the six-month 
+period (half a year) in which the date falls 
+SELECT BEGINOFHALF(10/22/06) FROM DUMMY FORMAT; /* 
+07/01/06 */ 
+ BEGINOFYEAR(date) — yields the date of the first day of the year 
+SELECT BEGINOFYEAR(10/22/06) FROM DUMMY FORMAT; /* 
+01/01/06 */ 
+ ENDOFMONTH(date) — yields the date of the end of the month 
+SELECT ENDOFMONTH(04/22/06) FROM DUMMY FORMAT; /* 
+04/30/06 */ 
+ ENDOFQUARTER(date) — yields the date of the end of the quarter 
+31 
+Ver.1, Sept. 24, 2017 
+Cat.No.LB17000590  
+Chapter 2: SQL Syntax 
+SELECT ENDOFQUARTER(03/22/06) FROM DUMMY FORMAT; /* 
+03/31/06 */ 
+ ENDOFHALF(date) — yields the date of the end of the half-year 
+SELECT ENDOFHALF(03/22/06) FROM DUMMY FORMAT; /* 
+06/30/06 */ 
+ ENDOFYEAR(date) — yields the date of the end of the year 
+SELECT ENDOFYEAR(03/22/06) FROM DUMMY FORMAT; /* 
+12/31/06 */ 
+ ATOD(date, pattern) — converts dates, times and days into internal 
+numbers (mainly used to import external data) 
+see usage below 
+ DTOA(date, pattern) — converts dates, times and days in the system to 
+ASCII (mainly used to print out or display data to the user) 
+see usage below 
+Pattern Components for ATOD and DTOA Expressions 
+The following pattern components can be included in ATOD and DTOA 
+expressions (those marked with an asterisk (*) only apply to DTOA). Of course, 
+more than one component can be used in the same expression. 
+Note: You can add punctuation marks (e.g., dashes, slashes, commas) and 
+spaces between pattern components as desired. 
+ MMM or mmm — abbreviated form (first three letters) of month name 
+(Jan)  
+ MMMM or mmmm — full name of the month (January) 
+ MONTH — abbreviated form of month name and the last two digits of the 
+year (Jun-06)  
+ MM — number of the month (01) 
+ DD — date in the month (15) 
+ YY — last two digits of year (06) 
+ YYYY — all four digits of year (2006) 
+ day* — weekday (Mon) 
+ hh:mm — hours and minutes (12:05) 
+ XX/XX/XX — date with two-digit year, displayed in American or European 
+format, depending on the language type defined in the Languages form.  
+ XX/XX/XXXX — date with four-digit year, displayed in American or 
+European format, depending on the language type defined in the 
+Languages form. 
+ FULLDATE* — the month name (abbreviated form), date and four-digit 
+year 
+Converting a String to a Date: Examples 
+SELECT ATOD('06/21/06','MM/DD/YY') FROM DUMMY FORMAT;  
+/* 06/21/06 (June 21, 2006, in American format) */ 
+32 
+Ver.1, Sept. 24, 2017 
+Cat.No.LB17000590  
+Chapter 2: SQL Syntax 
+SELECT ATOD('06/21/2006','MM/DD/YYYY') FROM DUMMY 
+FORMAT;  
+/* 06/21/06 (June 21, 2006, in American format) */ 
+SELECT ATOD('062106','MMDDYY') FROM DUMMY FORMAT;  
+/* 06/21/06 (June 21, 2006, in American format) */ 
+SELECT ATOD('311006','DDMMYY') FROM DUMMY FORMAT;  
+/* 31/10/06 (October 31, 2006, in European format) */ 
+SELECT ATOD('31102006','DDMMYYYY') FROM DUMMY FORMAT;  
+/* 31/10/06 (October 31, 2006, in European format) */ 
+Converting a Date to a String: Examples 
+Unless otherwise stated, examples are in American date format. 
+:DATE = 06/01/06; /* June 1, 2006 */ 
+SELECT DTOA(:DATE,'MMMM') FROM DUMMY FORMAT; /* June */ 
+SELECT DTOA(:DATE,'MMM') FROM DUMMY FORMAT; /* Jun */ 
+SELECT DTOA(:DATE,'MM') FROM DUMMY FORMAT; /* 06 */ 
+SELECT DTOA(:DATE,'MONTH') FROM DUMMY FORMAT; /* Jun-06 
+*/ 
+SELECT DTOA(:DATE,'day') FROM DUMMY FORMAT; /* Thu */ 
+SELECT DTOA(06/01/06,'XX/XX/XX') FROM DUMMY FORMAT;  
+/* 06/01/06 (June 1, 2006, in American format; January 6, 2006, in 
+European) */ 
+SELECT DTOA(:DATE,'FULLDATE') AS 'FULLDATE' FROM DUMMY 
+FORMAT;  
+/* Jun 01,2006 */ 
+:DATE = 06/01/06 12:33; 
+SELECT DTOA(:DATE,'MM/DD/YY hh:mm,day') FROM DUMMY 
+FORMAT;  
+/* 06/01/06 12:33,Thu */ 
+SELECT DTOA(:DATE,'MMM-YY') FROM DUMMY FORMAT; /* Jun
+06 */ 
+SELECT DTOA(:DATE,'MMMM-YYYY') FROM DUMMY FORMAT;     
+/* June-2006 */ 
+SELECT DTOA(:DATE, 'The current date is MM-DD-YY, and the time 
+is hh:mm.') FROM DUMMY FORMAT;  

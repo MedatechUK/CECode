@@ -1,0 +1,13 @@
+DECLARE C CURSOR FOR ... 
+OPEN C; 
+GOTO 1203359 WHERE :RETVAL = 0; /* Open failed; no record meets 
+condition */ 
+LABEL 1203351; FETCH C INTO ... 
+GOTO 1203358 WHERE :RETVAL = 0; /* No more fetched records */ 
+
+Database manipulations with the fetched fields; usually updates of some sort 
+
+LOOP 1203351; 
+LABEL 1203358;  
+CLOSE C; 
+LABEL 1203359;  

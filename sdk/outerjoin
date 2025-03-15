@@ -1,0 +1,10 @@
+Outer Join 
+An outer join is represented in Priority’s syntax by a question mark (?) 
+following the table ID: 
+SELECT ... 
+FROM FNCITEMS, FNCITEMSB ? 
+WHERE FNCITEMSB.FNCTRANS = FNCITEMS.FNCTRANS 
+AND FNCITEMSB.KLINE = FNCITEMS.KLINE; 
+As opposed to regular joins, an outer join preserves unmatched rows. Thus, if 
+there is no join record, a null record will be retrieved from the join table and 
+the query will succeed.

@@ -1,0 +1,103 @@
+Strings 
+The following expressions are related to strings: 
+ ITOA(m, n) — outputs m as a string having n characters, where both 
+values are integers (leading zeroes are added where necessary) 
+Note: If no n is specified, or if the value of n is less than what is needed, the 
+minimum required width will be used. 
+SELECT ITOA(35,4) FROM DUMMY FORMAT; /* '0035' */ 
+SELECT ITOA(35) FROM DUMMY FORMAT; /* '35' */ 
+ ATOI(string) — outputs the designated string as an integer 
+SELECT ATOI('35') FROM DUMMY FORMAT; /* 35 */ 
+ RTOA(m, n, USECOMMA) — outputs m (a real number) as a string, 
+displaying n decimal places according to the decimal format for the current 
+language. 
+Note: If USECOMMA is not included, the decimal format 1,234.56 will be 
+used. 
+SELECT RTOA(150654.665,2,USECOMMA) FROM DUMMY 
+FORMAT; 
+/* '150.654,67' assuming decimal format is 1.234,56 */ 
+SELECT RTOA(3.665432,2) FROM DUMMY FORMAT; /* '3.67' */ 
+ STRLEN(string) — outputs the length of the string (an integer) 
+SELECT STRLEN('Priority') FROM DUMMY FORMAT; /* 8 */ 
+ STRCAT(string1, string2, ...) — outputs the concatenation of given strings 
+Note: The length of the resulting concatenation is limited to 127 characters. 
+SELECT STRCAT('abc','ba') FROM DUMMY FORMAT; /* 'abcba' */ 
+ STRIND(string, m, n) — beginning from the mth position in a given string, 
+retrieves n characters, where m and n are fixed values 
+SELECT STRIND('Priority',3,2) FROM DUMMY FORMAT; /* 'io' */ 
+ SUBSTR(string, m, n) — beginning from the mth position in a given string, 
+retrieves n characters, whether m and n are variables or fixed values 
+:STR = ‘Priority’; 
+:I = 3; 
+:T = 2; 
+SELECT SUBSTR(:STR, :I, :T) FROM DUMMY FORMAT; /* 'io' */ 
+SELECT SUBSTR('Priority',3,2) FROM DUMMY FORMAT; /* 'io' */ 
+ RSTRIND(string, m, n) — same as STRIND, except that the string is read 
+from right to left 
+28 
+Ver.1, Sept. 24, 2017 
+Cat.No.LB17000590  
+Chapter 2: SQL Syntax 
+SELECT RSTRIND('Priority',3,2) FROM DUMMY FORMAT; /* 'ri' */ 
+ RSUBSTR(string, m, n) — same as SUBSTR, except that the string is read 
+from right to left 
+:STR = ‘Priority’; 
+:I = 3; 
+:T = 2; 
+SELECT RSUBSTR(:STR, :I, :T) FROM DUMMY FORMAT; /* 'ri' */ 
+SELECT RSUBSTR('Priority',3,2) FROM DUMMY FORMAT; /* 'ri' */ 
+ STRPREFIX(string, n) — retrieves the first n characters of the string, 
+where n is a fixed value 
+SELECT STRPREFIX('Priority',2) FROM DUMMY FORMAT; /* 'Pr' */ 
+ STRPIECE(string, delimiter, m, n) — for a given input string and delimiter 
+(which breaks up the string into parts), retrieves n parts, beginning from 
+the mth part 
+Note: The string and parameters m and n may be variables, but the delimiter 
+must be a fixed value. 
+SELECT STRPIECE('a/b.c.d/e.f','.',2,1) FROM DUMMY FORMAT; /* 'c' 
+*/ 
+SELECT STRPIECE('a/b.c.d/e.f','/',2,1) FROM DUMMY FORMAT; /* 
+'b.c.d' */ 
+SELECT STRPIECE('a/b.c.d/e.f','.',1,3) FROM DUMMY FORMAT; /* 
+'a/b.c.d/e' */ 
+SELECT STRPIECE('a/b.c.d/e.f','/',1,3) FROM DUMMY FORMAT; /* 
+'a/b.c.d/e.f' */ 
+ ISALPHA(string) — indicates whether a given string begins with a letter 
+and is comprised solely of: uppercase and lowercase letters, digits, and/or 
+_ (underline); yields 1 if it is, 0 if it is not. 
+SELECT ISALPHA('Priority_21') FROM DUMMY FORMAT; /* 1 */ 
+SELECT ISALPHA('21Priority') FROM DUMMY FORMAT; /* 0 */ 
+ ISPREFIX(string1, string2) — indicates whether the first string is the prefix 
+appearing in the second string 
+SELECT ISPREFIX('HEEE','HEEE_ORDERS') FROM DUMMY 
+FORMAT; /* 1 */  
+SELECT ISPREFIX('HEEWE','HEEE_ORDERS') FROM DUMMY 
+FORMAT; /* 0 */  
+ ISNUMERIC(string) — indicates whether a given string is comprised solely 
+of digits; yields 1 if it is, 0 if it is not. Useful when you wish to ensure that a 
+given column of CHAR type is made up only of digits (i.e., a zip code).  
+Note: You would not use INT type in this case, because you do not want the 
+value to be treated like a number (i.e., you want the zip code to appear as 
+07666 and not as 7,666). 
+29 
+Ver.1, Sept. 24, 2017 
+Cat.No.LB17000590  
+Chapter 2: SQL Syntax 
+SELECT ISNUMERIC('07666') FROM DUMMY FORMAT; /* 1 */ 
+SELECT ISNUMERIC('14.5') FROM DUMMY FORMAT; /* 0 */ 
+ ISFLOAT(string) — indicates whether a given string is a real number; 
+yields 1 if it is, 0 if it is not.  
+SELECT ISFLOAT('14.5') FROM DUMMY FORMAT; /* 1 */ 
+ TOUPPER(string) — changes characters to uppercase letters 
+:LOW = 'marianne'; 
+SELECT TOUPPER(:LOW) FROM DUMMY FORMAT; /* MARIANNE 
+*/ 
+ TOLOWER(string) — changes characters to lowercase letters 
+:UPPER = 'MARIANNE'; 
+SELECT TOLOWER(:UPPER) FROM DUMMY FORMAT; /* marianne 
+*/ 
+ ENTMESSAGE(entity_name, entity_type, message_number —  returns 
+the message for message_number of entity entity_name with type 
+entity_type. 
+SELECT ENTMESSAGE('ORDERS','F',3) FROM DUMMY FORMAT;  
+/* You cannot revise the number of an itemized order. */

@@ -1,0 +1,7 @@
+Conditional Expression 
+Following C language, Priority uses the symbols ? : to designate a 
+conditional expression (if ... then ... else ... ). The syntax of a conditional 
+expression is: 
+( expression ? expression : expression ) 
+If the first expression yields a True value, then the second will determine the 
+resulting value. If not, then the third expression will determine that value.
