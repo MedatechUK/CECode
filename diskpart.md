@@ -60,8 +60,8 @@
 
 2. **Copy Files to I:**:  
    ```cmd
-   xcopy F:\*.* I:\ /E /H /C /I /Y
-   xcopy G:\*.* I:\ /E /H /C /I /Y
+   xcopy F:\*.* "I:\From F Drive" /E /H /C /I /Y
+   xcopy G:\*.* "I:\From G Drive" /E /H /C /I /Y
    ```  
    - **Flags Explained**:  
      - `/E`: Copies all subdirectories, including empty ones.  
@@ -148,8 +148,8 @@
 
 1. **Copy Files**:  
    ```cmd
-   xcopy I:\*.* F:\ /E /H /C /I /Y
-   xcopy I:\*.* G:\ /E /H /C /I /Y
+   xcopy I:\From F Drive\*.* F:\ /E /H /C /I /Y
+   xcopy I:\From G Drive\*.* G:\ /E /H /C /I /Y
    ```  
    - **Key Point**: The mount points (`F:\Priority`, `G:\Priority`, etc.) retain the original folder names, so file paths remain unchanged.
 
