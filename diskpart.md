@@ -66,14 +66,14 @@
    setlocal enabledelayedexpansion
 
    echo Copying files from F: drive...
-   robocopy "f:\Priority" "i:\From F Drive\Priority" /E /XO /V /R:5 /W:5
-   robocopy "f:\Dev" "i:\From F Drive\Dev" /E /XO /V /R:5 /W:5
-   robocopy "f:\Test" "i:\From F Drive\Test" /E /XO /V /R:5 /W:5
+   robocopy "f:\pridata" i:\From F Drive\pridata" /E /XO /V /R:5 /W:5
+   robocopy "f:\pridev" "i:\From F Drive\pridev" /E /XO /V /R:5 /W:5
+   robocopy "f:\pritest" "i:\From F Drive\pritest" /E /XO /V /R:5 /W:5
 
    echo Copying files from G: drive...
-   robocopy "g:\Priority" "i:\From G Drive\Priority" /E /XO /V /R:5 /W:5
-   robocopy "g:\Dev" "i:\From G Drive\Dev" /E /XO /V /R:5 /W:5
-   robocopy "g:\Test" "i:\From G Drive\Test" /E /XO /V /R:5 /W:5
+   robocopy "g:\pridata" "i:\From G Drive\pridata" /E /XO /V /R:5 /W:5
+   robocopy "g:\pridev" "i:\From G Drive\pridev" /E /XO /V /R:5 /W:5
+   robocopy "g:\pritest" "i:\From G Drive\pritest" /E /XO /V /R:5 /W:5
 
    echo Verifying files from F: drive...
    for /R "f:\Priority" %%f in (*.*) do (
