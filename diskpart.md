@@ -2,22 +2,22 @@
 
 **Machine**: CE-AZ-UK-S-PRIO (PrioritySQL)  
 **Date**: March 15, 2025  
-**Objective**: Add a 4 TB attachments disk (I:), replace F: and G: with 4 TB disks, create 1 GB base partitions with mount points named identically to the original folders (`Priority`, `Dev`, `Test`), and copy files back to these mount points without modifying SQL database locations.
+**Objective**: Expand F: and G: disks to 4 TB each, repartition them by removing existing partitions, create 1 GB base partitions with mount points (`Priority` at 1.5 TB, `Dev` at 1 TB, `Test` at 1.5 TB), and copy files back to these mount points without modifying SQL database locations. Add a 4 TB attachments disk (I:) for temporary storage.
 
 ---
 
 ## Final Structure
 
-- **Disk 4 (4 TB, replaces old F:)**  
+- **Disk 4 (4 TB, F: expanded from 1 TB):**  
   - **F:** 1 GB base partition, labeled `SQLVMDATA1`.  
-    - **F:\Priority**: ~1.33 TB mount point (hosts Priority data files, e.g., `F:\Priority\PriorityDB.mdf`).  
-    - **F:\Dev**: ~1.33 TB mount point (hosts Dev data files, e.g., `F:\Dev\DevDB.mdf`).  
-    - **F:\Test**: ~1.33 TB mount point (hosts Test data files, e.g., `F:\Test\TestDB.mdf`).  
-- **Disk 5 (4 TB, replaces old G:)**  
+    - **F:\Priority**: 1.5 TB mount point (hosts Priority data files, e.g., `F:\Priority\PriorityDB.mdf`).  
+    - **F:\Dev**: 1 TB mount point (hosts Dev data files, e.g., `F:\Dev\DevDB.mdf`).  
+    - **F:\Test**: 1.5 TB mount point (hosts Test data files, e.g., `F:\Test\TestDB.mdf`).  
+- **Disk 5 (4 TB, G: expanded from 1 TB):**  
   - **G:** 1 GB base partition, labeled `SQLVMLOG`.  
-    - **G:\Priority**: ~1.33 TB mount point (hosts Priority log files, e.g., `G:\Priority\PriorityDB.ldf`).  
-    - **G:\Dev**: ~1.33 TB mount point (hosts Dev log files, e.g., `G:\Dev\DevDB.ldf`).  
-    - **G:\Test**: ~1.33 TB mount point (hosts Test log files, e.g., `G:\Test\TestDB.ldf`).  
+    - **G:\Priority**: 1.5 TB mount point (hosts Priority log files, e.g., `G:\Priority\PriorityDB.ldf`).  
+    - **G:\Dev**: 1 TB mount point (hosts Dev log files, e.g., `G:\Dev\DevDB.ldf`).  
+    - **G:\Test**: 1.5 TB mount point (hosts Test log files, e.g., `G:\Test\TestDB.ldf`).  
 - **Disk 6 (4 TB, new I:)**  
   - **I:** 4 TB single partition, labeled `ATTACHMENTS`.
 
@@ -49,7 +49,7 @@
 
 ---
 
-### Step 2: Copy Database Files to I:
+### Step 2: Copy and Verify Files from F: and G: to I:
 
 1. **Stop SQL Server Instances**:  
    ```cmd
@@ -58,82 +58,114 @@
    net stop "MSSQL$TEST"
    ```
 
-2. **Copy Files to I:**:  
+2. **Run Copy and Verify Batch Script**:  
+   - Save the following as `CopyAndVerify.bat` and run it in an elevated Command Prompt:  
    ```cmd
-   xcopy F:\*.* "I:\From F Drive" /E /H /C /I /Y
-   xcopy G:\*.* "I:\From G Drive" /E /H /C /I /Y
-   ```  
-   - **Flags Explained**:  
-     - `/E`: Copies all subdirectories, including empty ones.  
-     - `/H`: Copies hidden and system files.  
-     - `/C`: Continues on errors.  
-     - `/I`: Assumes destination is a directory.  
-     - `/Y`: Overwrites without prompting.
+   @echo off
+   echo Copying files from F: drive...
+   robocopy "f:\Priority" "i:\From F Drive\Priority" /E /XO /V /R:5 /W:5
+   robocopy "f:\Dev" "i:\From F Drive\Dev" /E /XO /V /R:5 /W:5
+   robocopy "f:\Test" "i:\From F Drive\Test" /E /XO /V /R:5 /W:5
 
-3. **Verify**:  
-   ```cmd
-   dir I:\Priority
-   dir I:\Dev
-   dir I:\Test
-   ```
+   echo Copying files from G: drive...
+   robocopy "g:\Priority" "i:\From G Drive\Priority" /E /XO /V /R:5 /W:5
+   robocopy "g:\Dev" "i:\From G Drive\Dev" /E /XO /V /R:5 /W:5
+   robocopy "g:\Test" "i:\From G Drive\Test" /E /XO /V /R:5 /W:5
+
+   echo Verifying files from F: drive...
+   for /R "f:\Priority" %%f in (*.*) do (
+       if exist "i:\From F Drive\Priority\%%~nxf" (
+           fc /B "%%f" "i:\From F Drive\Priority\%%~nxf" >> comparison_log.txt 2>&1
+       )
+   )
+   for /R "f:\Dev" %%f in (*.*) do (
+       if exist "i:\From F Drive\Dev\%%~nxf" (
+           fc /B "%%f" "i:\From F Drive\Dev\%%~nxf" >> comparison_log.txt 2>&1
+       )
+   )
+   for /R "f:\Test" %%f in (*.*) do (
+       if exist "i:\From F Drive\Test\%%~nxf" (
+           fc /B "%%f" "i:\From F Drive\Test\%%~nxf" >> comparison_log.txt 2>&1
+       )
+   )
+
+   echo Verifying files from G: drive...
+   for /R "g:\Priority" %%f in (*.*) do (
+       if exist "i:\From G Drive\Priority\%%~nxf" (
+           fc /B "%%f" "i:\From G Drive\Priority\%%~nxf" >> comparison_log.txt 2>&1
+       )
+   )
+   for /R "g:\Dev" %%f in (*.*) do (
+       if exist "i:\From G Drive\Dev\%%~nxf" (
+           fc /B "%%f" "i:\From G Drive\Dev\%%~nxf" >> comparison_log.txt 2>&1
+       )
+   )
+   for /R "g:\Test" %%f in (*.*) do (
+       if exist "i:\From G Drive\Test\%%~nxf" (
+           fc /B "%%f" "i:\From G Drive\Test\%%~nxf" >> comparison_log.txt 2>&1
+       )
+   )
+
+   echo Verification complete. Check comparison_log.txt for details.
+   pause
+   ```  
+   - **Notes**:  
+     - `robocopy` ensures reliable copying with retries (`/R:5 /W:5`) and verbose logging (`/V`).  
+     - `fc /B` performs binary comparison, logging results to `comparison_log.txt`.  
+     - Folder names are `Priority`, `Dev`, `Test` to match mount points.
+
+3. **Check Verification**:  
+   - Open `comparison_log.txt` and look for "No differences encountered" for each file. Any discrepancies indicate a copy issue.
 
 ---
 
-### Step 3: Replace and Repartition F: and G:
+### Step 3: Repartition F: and G: Disks
 
-1. **In Azure Portal**:  
-   - **Detach Old Disks**:  
-     - VM > **Disks** > **Edit** > Detach `SQLVMDATA1` (F:) and `SQLVMLOG` (G:).  
-     - Save.  
-   - **Attach New 4 TB Disks**:  
-     - Add two new disks:  
-       - Disk 4: Name `SQL_DATA_4TB`, 4096 GB (P40), LUN 4.  
-       - Disk 5: Name `SQL_LOG_4TB`, 4096 GB (P40), LUN 5.  
-     - Save.
-
-2. **Initialize and Partition Disk 4 (F:)**:  
+1. **Remove Existing Partitions on F:**:  
    ```cmd
    diskpart
-   DISKPART> list disk  (confirm Disk 4 is 4 TB)
+   DISKPART> list disk  (identify Disk 4, e.g., 4 TB)
    DISKPART> select disk 4
+   DISKPART> clean  (removes all partitions)
    DISKPART> convert gpt
    DISKPART> create partition primary size=1000
    DISKPART> format fs=ntfs label="SQLVMDATA1" quick
    DISKPART> assign letter=F
-   DISKPART> create partition primary size=1365000
+   DISKPART> create partition primary size=1536000  (1.5 TB)
    DISKPART> format fs=ntfs label="Priority_Data" quick
    DISKPART> assign mount=F:\Priority
-   DISKPART> create partition primary size=1365000
+   DISKPART> create partition primary size=1024000  (1 TB)
    DISKPART> format fs=ntfs label="Dev_Data" quick
    DISKPART> assign mount=F:\Dev
-   DISKPART> create partition primary size=1365000
+   DISKPART> create partition primary size=1536000  (1.5 TB)
    DISKPART> format fs=ntfs label="Test_Data" quick
    DISKPART> assign mount=F:\Test
    DISKPART> exit
    ```
 
-3. **Initialize and Partition Disk 5 (G:)**:  
+2. **Remove Existing Partitions on G:**:  
    ```cmd
    diskpart
-   DISKPART> list disk  (confirm Disk 5 is 4 TB)
+   DISKPART> list disk  (identify Disk 5, e.g., 4 TB)
    DISKPART> select disk 5
+   DISKPART> clean  (removes all partitions)
    DISKPART> convert gpt
    DISKPART> create partition primary size=1000
    DISKPART> format fs=ntfs label="SQLVMLOG" quick
    DISKPART> assign letter=G
-   DISKPART> create partition primary size=1365000
+   DISKPART> create partition primary size=1536000  (1.5 TB)
    DISKPART> format fs=ntfs label="Priority_Logs" quick
    DISKPART> assign mount=G:\Priority
-   DISKPART> create partition primary size=1365000
+   DISKPART> create partition primary size=1024000  (1 TB)
    DISKPART> format fs=ntfs label="Dev_Logs" quick
    DISKPART> assign mount=G:\Dev
-   DISKPART> create partition primary size=1365000
+   DISKPART> create partition primary size=1536000  (1.5 TB)
    DISKPART> format fs=ntfs label="Test_Logs" quick
    DISKPART> assign mount=G:\Test
    DISKPART> exit
    ```
 
-4. **Verify**:  
+3. **Verify**:  
    ```cmd
    dir F:\
    dir G:\
@@ -148,10 +180,10 @@
 
 1. **Copy Files**:  
    ```cmd
-   xcopy I:\From F Drive\*.* F:\ /E /H /C /I /Y
-   xcopy I:\From G Drive\*.* G:\ /E /H /C /I /Y
+   xcopy "I:\From F Drive\*.*" F:\ /E /H /C /I /Y
+   xcopy "I:\From G Drive\*.*" G:\ /E /H /C /I /Y
    ```  
-   - **Key Point**: The mount points (`F:\Priority`, `G:\Priority`, etc.) retain the original folder names, so file paths remain unchanged.
+   - **Key Point**: Files are copied from `I:\From F Drive` to F: and `I:\From G Drive` to G:, preserving the original folder structure (`Priority`, `Dev`, `Test`) now as mount points.
 
 2. **Verify**:  
    ```cmd
@@ -179,7 +211,12 @@
 
 ## Notes
 
-- **Folder Names**: Mount points (`F:\Priority`, `G:\Priority`, etc.) must match the original folder names to avoid SQL database location changes.  
-- **Partition Sizes**: Adjust `size=` values in `diskpart` if different allocations are needed.  
+- **Partition Sizes**:  
+  - 1 GB base = 1000 MB.  
+  - 1.5 TB = 1,536,000 MB (Priority, Test).  
+  - 1 TB = 1,024,000 MB (Dev).  
+  - Total: 1 GB + 1.5 TB + 1 TB + 1.5 TB ≈ 4 TB (4096 GB).  
+- **Folder Names**: Mount points (`F:\Priority`, `G:\Priority`, etc.) match the original folder names. The batch script uses these names; adjust if your originals differ.  
+- **Temporary Disk I:**: Detach the I: disk after verification if no longer required.
 
 ---
