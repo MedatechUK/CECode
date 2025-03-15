@@ -76,54 +76,53 @@
    robocopy "g:\pritest" "i:\From G Drive\pritest" /E /XO /V /R:5 /W:5
 
    echo Verifying files from F: drive...
-   for /R "f:\Priority" %%f in (*.*) do (
-      set "destfile=i:\From F Drive\Priority\%%~pnxf"
-      set "destfile=!destfile:f:\Priority\=!"
+   for /R "f:\pridata" %%f in (*.*) do (
+      set "destfile=i:\From F Drive\pridata\%%~pnxf"
+      set "destfile=!destfile:f:\pridata\=!"
       if exist "!destfile!" (
          fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
       )
    )
-   for /R "f:\Dev" %%f in (*.*) do (
-      set "destfile=i:\From F Drive\Dev\%%~pnxf"
-      set "destfile=!destfile:f:\Dev\=!"
+   for /R "f:\pridev" %%f in (*.*) do (
+      set "destfile=i:\From F Drive\pridev\%%~pnxf"
+      set "destfile=!destfile:f:\pridev\=!"
       if exist "!destfile!" (
          fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
       )
    )
-   for /R "f:\Test" %%f in (*.*) do (
-      set "destfile=i:\From F Drive\Test\%%~pnxf"
-      set "destfile=!destfile:f:\Test\=!"
+   for /R "f:\pritest" %%f in (*.*) do (
+      set "destfile=i:\From F Drive\pritest\%%~pnxf"
+      set "destfile=!destfile:f:\pritest\=!"
       if exist "!destfile!" (
          fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
       )
    )
 
    echo Verifying files from G: drive...
-   for /R "g:\Priority" %%f in (*.*) do (
-      set "destfile=i:\From G Drive\Priority\%%~pnxf"
-      set "destfile=!destfile:g:\Priority\=!"
+   for /R "g:\pridata" %%f in (*.*) do (
+      set "destfile=i:\From G Drive\pridata\%%~pnxf"
+      set "destfile=!destfile:g:\pridata\=!"
       if exist "!destfile!" (
          fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
       )
    )
-   for /R "g:\Dev" %%f in (*.*) do (
-      set "destfile=i:\From G Drive\Dev\%%~pnxf"
-      set "destfile=!destfile:g:\Dev\=!"
+   for /R "g:\pridev" %%f in (*.*) do (
+      set "destfile=i:\From G Drive\pridev\%%~pnxf"
+      set "destfile=!destfile:g:\pridev\=!"
       if exist "!destfile!" (
          fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
       )
    )
-   for /R "g:\Test" %%f in (*.*) do (
-      set "destfile=i:\From G Drive\Test\%%~pnxf"
-      set "destfile=!destfile:g:\Test\=!"
+   for /R "g:\pritest" %%f in (*.*) do (
+      set "destfile=i:\From G Drive\pritest\%%~pnxf"
+      set "destfile=!destfile:g:\pritest\=!"
       if exist "!destfile!" (
          fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
       )
    )
 
    echo Verification complete. Check comparison_log.txt for details.
-   pause
-   ```  
+   pause   ```  
    - **Notes**:  
      - `robocopy` ensures reliable copying with retries (`/R:5 /W:5`) and verbose logging (`/V`).  
      - `fc /B` performs binary comparison, logging results to `comparison_log.txt`.  
