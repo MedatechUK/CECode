@@ -61,53 +61,67 @@
 2. **Run Copy and Verify Batch Script**:  
    - Save the following as `CopyAndVerify.bat` and run it in an elevated Command Prompt:  
    ```cmd
-   @echo off
-   echo Copying files from F: drive...
-   robocopy "f:\Priority" "i:\From F Drive\Priority" /E /XO /V /R:5 /W:5
-   robocopy "f:\Dev" "i:\From F Drive\Dev" /E /XO /V /R:5 /W:5
-   robocopy "f:\Test" "i:\From F Drive\Test" /E /XO /V /R:5 /W:5
+@echo off
+setlocal enabledelayedexpansion
 
-   echo Copying files from G: drive...
-   robocopy "g:\Priority" "i:\From G Drive\Priority" /E /XO /V /R:5 /W:5
-   robocopy "g:\Dev" "i:\From G Drive\Dev" /E /XO /V /R:5 /W:5
-   robocopy "g:\Test" "i:\From G Drive\Test" /E /XO /V /R:5 /W:5
+echo Copying files from F: drive...
+robocopy "f:\Priority" "i:\From F Drive\Priority" /E /XO /V /R:5 /W:5
+robocopy "f:\Dev" "i:\From F Drive\Dev" /E /XO /V /R:5 /W:5
+robocopy "f:\Test" "i:\From F Drive\Test" /E /XO /V /R:5 /W:5
 
-   echo Verifying files from F: drive...
-   for /R "f:\Priority" %%f in (*.*) do (
-       if exist "i:\From F Drive\Priority\%%~nxf" (
-           fc /B "%%f" "i:\From F Drive\Priority\%%~nxf" >> comparison_log.txt 2>&1
-       )
-   )
-   for /R "f:\Dev" %%f in (*.*) do (
-       if exist "i:\From F Drive\Dev\%%~nxf" (
-           fc /B "%%f" "i:\From F Drive\Dev\%%~nxf" >> comparison_log.txt 2>&1
-       )
-   )
-   for /R "f:\Test" %%f in (*.*) do (
-       if exist "i:\From F Drive\Test\%%~nxf" (
-           fc /B "%%f" "i:\From F Drive\Test\%%~nxf" >> comparison_log.txt 2>&1
-       )
-   )
+echo Copying files from G: drive...
+robocopy "g:\Priority" "i:\From G Drive\Priority" /E /XO /V /R:5 /W:5
+robocopy "g:\Dev" "i:\From G Drive\Dev" /E /XO /V /R:5 /W:5
+robocopy "g:\Test" "i:\From G Drive\Test" /E /XO /V /R:5 /W:5
 
-   echo Verifying files from G: drive...
-   for /R "g:\Priority" %%f in (*.*) do (
-       if exist "i:\From G Drive\Priority\%%~nxf" (
-           fc /B "%%f" "i:\From G Drive\Priority\%%~nxf" >> comparison_log.txt 2>&1
-       )
-   )
-   for /R "g:\Dev" %%f in (*.*) do (
-       if exist "i:\From G Drive\Dev\%%~nxf" (
-           fc /B "%%f" "i:\From G Drive\Dev\%%~nxf" >> comparison_log.txt 2>&1
-       )
-   )
-   for /R "g:\Test" %%f in (*.*) do (
-       if exist "i:\From G Drive\Test\%%~nxf" (
-           fc /B "%%f" "i:\From G Drive\Test\%%~nxf" >> comparison_log.txt 2>&1
-       )
-   )
+echo Verifying files from F: drive...
+for /R "f:\Priority" %%f in (*.*) do (
+    set "destfile=i:\From F Drive\Priority\%%~pnxf"
+    set "destfile=!destfile:f:\Priority\=!"
+    if exist "!destfile!" (
+        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+    )
+)
+for /R "f:\Dev" %%f in (*.*) do (
+    set "destfile=i:\From F Drive\Dev\%%~pnxf"
+    set "destfile=!destfile:f:\Dev\=!"
+    if exist "!destfile!" (
+        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+    )
+)
+for /R "f:\Test" %%f in (*.*) do (
+    set "destfile=i:\From F Drive\Test\%%~pnxf"
+    set "destfile=!destfile:f:\Test\=!"
+    if exist "!destfile!" (
+        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+    )
+)
 
-   echo Verification complete. Check comparison_log.txt for details.
-   pause
+echo Verifying files from G: drive...
+for /R "g:\Priority" %%f in (*.*) do (
+    set "destfile=i:\From G Drive\Priority\%%~pnxf"
+    set "destfile=!destfile:g:\Priority\=!"
+    if exist "!destfile!" (
+        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+    )
+)
+for /R "g:\Dev" %%f in (*.*) do (
+    set "destfile=i:\From G Drive\Dev\%%~pnxf"
+    set "destfile=!destfile:g:\Dev\=!"
+    if exist "!destfile!" (
+        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+    )
+)
+for /R "g:\Test" %%f in (*.*) do (
+    set "destfile=i:\From G Drive\Test\%%~pnxf"
+    set "destfile=!destfile:g:\Test\=!"
+    if exist "!destfile!" (
+        fc /B "%%f" "!destfile!" >> comparison_log.txt 2>&1
+    )
+)
+
+echo Verification complete. Check comparison_log.txt for details.
+pause
    ```  
    - **Notes**:  
      - `robocopy` ensures reliable copying with retries (`/R:5 /W:5`) and verbose logging (`/V`).  
